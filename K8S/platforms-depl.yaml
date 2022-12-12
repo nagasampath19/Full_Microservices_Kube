@@ -1,0 +1,37 @@
+kind: Deployment
+apiVersion: apps/v1
+metadata:
+  name: platforms-depl
+spec:
+  replicas: 1
+  #number of replicas generated
+  selector:
+    #assigns labels to the pods for future selection
+    matchLabels:
+      app: platformservice
+      version: v01
+  template:
+    metadata:
+      labels:
+        app: platformservice
+        version: v01
+    spec:
+      containers:
+      - name: platformservice-container
+        image: nagasampath19/platformservice
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: platforms-clusterip-srv
+spec:
+  type: ClusterIP
+  selector:
+    app: platformservice
+  ports:
+  - name: platformservice
+    protocol: TCP
+    port: 80
+    targetPort: 80
+
+

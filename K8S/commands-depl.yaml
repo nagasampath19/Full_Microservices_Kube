@@ -1,0 +1,37 @@
+kind: Deployment
+apiVersion: apps/v1
+metadata:
+  name: commands-depl
+spec:
+  replicas: 1
+  #number of replicas generated
+  selector:
+    #assigns labels to the pods for future selection
+    matchLabels:
+      app: commandservice
+      version: v01
+  template:
+    metadata:
+      labels:
+        app: commandservice
+        version: v01
+    spec:
+      containers:
+      - name: commandservice-container
+        image: nagasampath19/commandservice
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: commands-clusterip-srv
+spec:
+  type: ClusterIP
+  selector:
+    app: commandservice
+  ports:
+  - name: commandservice
+    protocol: TCP
+    port: 80
+    targetPort: 80
+
+
